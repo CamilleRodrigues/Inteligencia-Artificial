@@ -1,0 +1,47 @@
+1. Problema dos Missionários e Canibais
+
+- Há 3 missionários e 3 canibais. 
+- Há também um barco que vai da margem esquerda para a margem direita e vice-versa, sempre levando um ou duas pessoas. 
+- Todas as pessoas estão na margem esquerda e precisam ir para a margem direita. 
+- Porém, há restrições: em momento algum pode ficar mais canibais do que missionários em uma das margens. 
+
+- Modelagem:
+a) Estados
+	NME - Número de missionários na margem esquerda
+ 	NCE - Número de canibais na margem esquerda
+	NMD - Número de missionários na margem direita
+		NMD = 3 - NME
+ 	NCD - Número de canibais na margem direita
+		NCD = 3 - NCE
+	PB - Posição do barco
+		0 = margem esquerda
+		1 = margem direita
+	Estado inicial - (3, 3, 0)
+	Estado final - (0, 0, 1)
+
+b) Regras de Transição - sempre levando uma ou duas pessoas
+	Possíveis movimentos - 1 missionário, 2 missionários, 1 canibal, 2 canibais, 1 missionário + 1 canibal
+
+c) Restrições
+	Em momento algum pode ficar mais canibais do que missionários em uma das margens
+	NME >= NCE ou NME = 0 
+	NMD >= NCD ou NMD = 0
+	-> 0 <= NME <= 3
+	-> 0 <= NCE <= 3
+	
+d) Visitados 
+	Visitados = {(NME, NCE, PB), ...}         
+	Visitados = {(3,3,0), (3,1,1), (3,2,0), (3,0,1)}
+
+e) Função objetivo - Estado final - (0, 0, 1)
+	(3,3,0) -> (3,1,1)  dois canibais atravessam para a margem direita
+	(3,1,1) -> (3,2,0)  um canibal volta para a margem esquerda
+	(3,2,0) -> (3,0,1)  dois canibais atravessam para a margem direita
+	(3,0,1) -> (3,1,0)  um canibal volta para a margem esquerda
+	(3,1,0) -> (1,1,1)  dois missionários atravessam para a margem direita
+	(1,1,1) -> (2,2,0)  um missionário e um canibal voltam para a margem esquerda
+	(2,2,0) -> (0,2,1)  dois missionários atravessam para a margem direita
+	(0,2,1) -> (0,3,0)  um canibal volta para a margem esquerda
+	(0,3,0) -> (0,1,1)  dois canibais atravessam para a margem direita
+	(0,1,1) -> (0,2,0)  um canibal volta para a margem esquerda
+	(0,2,0) -> (0,0,1)  dois canibais atravessam para a margem direita
