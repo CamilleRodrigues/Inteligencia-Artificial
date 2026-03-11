@@ -1,0 +1,48 @@
+
+2. Problema da travessia da ponte
+
+- Há 4 pessoas e precisam passar pela ponte
+  - aluno
+  - professora
+  - zelador
+  - cientista 
+- Cada um tem um tempo de travessia
+  - aluno: leva 1 minuto para cruzar a ponte
+  - professora: leva 2 minutos
+  - zelador: 5 minutos
+  - cientista: 10 minutos
+- O problema é: qual a sequência de travessia para que o tempo total seja no máximo de 17 minutos.
+- Contudo, para cruzar a ponte é preciso usar uma lanterna e no máximo duas pessoas podem cruzar a ponte. Qualquer pessoa cruzando a ponte precisa segurar a lanterna.
+
+- Modelagem:
+1) Estados
+	CPE - Conjunto de pessoas no lado esquerdo
+	CPD - Conjunto de pessoas no lado direito
+		CPD = 4 - CPE
+	PL - Posição lanterna
+		0 = lado esquerdo
+		1 = lado direito
+	Estado inicial - ({aluno, professora, zelador, cientista}, {}, 0)
+	Estado final - ({}, {aluno, professora, zelador, cientista}, 1) tempo total <= 17 minutos
+	
+2) Regras de Transição 
+	Possíveis movimentos:
+		IDA: aluno + professora, aluno + zelador, aluno + cientista, professora + zelador, professora + cientista, zelador + cientista
+		VOLTA: aluno, professora, zelador, cientista
+
+3) Restrições
+	No máximo duas pessoas atravessam
+	A lanterna deve sempre estar com quem atravessa
+	O tempo da travessia é determinado pela pessoa mais lenta
+
+4) Visitados
+	Visitados = {(CPE, CPD, PL), ...}
+	Visitados = {(4, 0, 0), (2, 2, 1), (3, 1, 0), (1, 3, 0), (2, 2, 0), (0, 4, 1)}
+
+5) Função objetivo - (0, 4, 1) e tempo total <= 17 minutos
+	({aluno, professora, zelador, cientista}, {}, 0)
+	({zelador, cientista}, {aluno, professora}, 1) -> aluno + professora atravessam → 2 min
+	({zelador, cientista, aluno}, {professora}, 0) -> aluno volta → 1 min
+	({aluno}, {professora, zelador, cientista}, 1) -> zelador + cientista atravessam → 10 min
+	({aluno, professora}, {zelador, cientista}, 0) -> professora volta → 2 min
+	({}, {aluno, professora, zelador, cientista}, 1) -> aluno + professora atravessam → 2 min | 2 + 1 + 10 + 2 + 2 = 17 minutos
