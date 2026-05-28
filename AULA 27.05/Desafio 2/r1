@@ -1,0 +1,19 @@
+viagens(5).
+
+!start.
+
++!start : true 
+    <- .print("guardo peças pequenas").
+
+//O contexto "& viagens(N) & N > 0" foi adicionado nessa etapa
++peca(Tamanho) : Tamanho = peq & viagens(N) & N > 0
+    <- .print("percebi uma peça ", Tamanho, " e vou guarda-la");
+       guardar(Tamanho);
+       
+       //Atualiza o estoque de viagens, subtraindo 1
+       -+viagens(N-1); 
+       .print("Viagens restantes: ", N-1).
+
++peca(Tamanho) : Tamanho = grd 
+    <- .print("percebi uma peça ", Tamanho, " e vou chamar r2 para me ajudar a guarda-la");
+       .send(r2,achieve,vamosGuardar(Tamanho)).
