@@ -1,0 +1,24 @@
+viagens(3).
+
+!start.
+
++!start : true  
+    <- .print("guardo peças médias").
+
+//O contexto "& viagens(N) & N > 0" foi adicionado nessa etapa
++peca(med) : viagens(N) & N > 0
+    <- .print("percebi uma peça media e vou guarda-la");
+       guardar(med);
+       
+       //Atualiza o estoque de viagens, subtraindo 1
+       -+viagens(N-1);
+       .print("Viagens restantes: ", N-1).
+
+//Nesse contexto só aceita ajudar a guardar a peça grande se tiver viagens
++!vamosGuardar(grd)[source(Agt)] : viagens(N) & N > 0
+    <- .print(Agt, " me chamou para guardar a peça grande");
+       guardar(grd); //Aqui irá executa a ação que alteramos no desafio 1 (Env.java)
+       
+       //Consome uma viagem pelo esforço
+       -+viagens(N-1);
+       .print("Ajudei a guardar a grande. Viagens restantes: ", N-1).
